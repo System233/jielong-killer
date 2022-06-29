@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "lib": ["ESNext"],
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "Node",
+        "declaration": true,
+        "outDir": "dist",
+        "module": "CommonJS"
+    },
+    "exclude": ["node_modules","dist","samples"]
+}

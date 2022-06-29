@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打卡登记</title>
+    <script>
+        const mapId='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const randId=()=>[...Array(parseInt(6+Math.random()*10))].map(()=>mapId[(Math.random()*mapId.length)|0]).join('');
+        const request=(method,url,data,headers)=>{
+            return new Promise((resolve,reject)=>{
+                const xhr=new XMLHttpRequest();
+                method=method.toUpperCase();
+                headers=Object.entries(Object.assign({},headers))
+                switch(method){
+                    case 'GET':
+                        url+='?'+Object.entries(data).map(([key,val])=>`${encodeURIComponent(key)}=${encodeURIComponent(val)}`).join('&');
+                        xhr.open(method,url);
+                        headers.map(([name,value])=>xhr.setRequestHeader(name,value));
+                        xhr.send(null);
+                    break;
+                    default:
+                        xhr.open(method,url);
+                        headers.map(([name,value])=>xhr.setRequestHeader(name,value));
+                        xhr.send(data);
+                }
+                xhr.addEventListener('load',e=>resolve(xhr.response));
+                xhr.addEventListener('error',e=>reject(new Error(xhr.statusText)))
+            })
+        }
+        window.addEventListener('load',()=>{
+            const img=document.querySelector('img');
+            const h2=document.querySelector('h2');
+            const key=document.querySelector('input');
+            key.value=localStorage.getItem('sckey');
+            key.addEventListener('input',()=>localStorage.setItem('sckey',key.value));
+            const id=randId();
+            img.src='/Portal/GetWXQRCode?key='+id;
+            const setStateText=(text)=>h2.innerText=text;
+            const interval=setInterval(async()=>{
+                const state=await request('get','/Portal/CheckLoginStatus',{key:id});
+                switch (state) {
+                    case '0':setStateText('等待扫码');break;
+                    case '1':setStateText('已扫描，请在确认登录');break;
+                    case '2':
+                        {
+                            clearInterval(interval);
+                            setStateText('登录完成');
+                            img.hidden=true;
+                            const state=await request('get','/Portal/Login',{key:id},{"x-sckey":key.value});
+                        }
+                    break;
+                    default:
+                        break;
+                }
+
+            },1000);
+        })
+
+    </script>
+</head>
+<body>
+    <img>
+    <h2>正在加载</h2>
+    <div>
+        Server酱通知Key:
+        <input type="text" name="key">
+    </div>
+</body>
+</html>

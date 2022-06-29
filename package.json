@@ -1,0 +1,36 @@
+{
+  "name": "jielong-killer",
+  "version": "1.0.0",
+  "description": "jielong killer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "serve": "node dist/server.js",
+    "check": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/System233/jielong-killer.git"
+  },
+  "keywords": [
+    "jielong"
+  ],
+  "author": "System233",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/System233/jielong-killer/issues"
+  },
+  "homepage": "https://github.com/System233/jielong-killer#readme",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "express": "^4.17.3",
+    "express-http-proxy": "^1.6.3",
+    "http-proxy-middleware": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/express-http-proxy": "^1.6.3",
+    "@types/node": "^17.0.21"
+  }
+}
