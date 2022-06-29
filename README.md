@@ -7,7 +7,7 @@
 
 # jielong-killer
 
-打卡接龙
+打卡接龙打卡机，集成server酱通知
 
 ## Usage 
 
@@ -22,11 +22,13 @@ npm run build
 #export SERVER_HOST=localhost
 #服务器端口，默认8000
 #export SERVER_PORT=8000
+#ThreadID 打卡表单的字符串ID
 npm run serve [ThreadID]
 ```
 
 运行打卡,可以考虑用cron调用
 ```shell
-npm run check
+# duration单位小时，在该时间内完成所有打卡
+npm run check [duration]
 ```
 
